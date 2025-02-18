@@ -1,5 +1,6 @@
 package Model;
 
+import Util.utilities;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -10,10 +11,11 @@ import java.util.concurrent.ThreadLocalRandom;
 @Table(name = "turma")
 public class Turma {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private long id;
+    @Column(columnDefinition = "varchar(30)", nullable = false)
     private int serie;
+    @Column(length = 10,unique = true)
     private String nome_sala;
     @Column(name = "capacidadeAtual")
     private int capacidadeAtual;
@@ -33,7 +35,7 @@ public class Turma {
 
 
     public Turma() {
-        this.id = ThreadLocalRandom.current().nextInt(100000, 999999);//gerar entre intrevalos. essa vai gerar um id de length =6
+        this.id=utilities.gerar_id("turma");
     }
 
     public long getId() {
@@ -64,8 +66,8 @@ public class Turma {
         this.matriculas = matriculas;
     }
 
-    public int getCapacidadeAtual() {
-        return capacidadeAtual;
+    public String getCapacidadeAtual() {
+        return "A capacidade atual da sala é de : " + capacidadeAtual+"\nSendo lotação total de :"+capacidadeMax;
     }
 
     public void setCapacidadeAtual(int capacidadeAtual) {

@@ -1,19 +1,19 @@
 package Model;
 
 
+import Util.utilities;
 import jakarta.persistence.*;
-import Model.metodos_globais.*;
 
 @Entity
 @Table(name="profesor_respons")
-public class Professor_responsavel {
+public class Professor_responsavel{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private int id;
-    @Column(columnDefinition = "var", unique = true, nullable = false)
+    private long id;
+    @Column(columnDefinition = "varchar(50)",unique = true, nullable = false)
     private String nome;
+    @Column(columnDefinition = "varchar(50)",unique = true)
     private String email;
     private String telefone;
 
@@ -22,13 +22,15 @@ public class Professor_responsavel {
     @JoinColumn(name = "disciplina_id")//cria uma tabela chamada disciplina_id em professor
     private Disciplina disciplina_fk;
 
-    public int getId() {
+    public Professor_responsavel() {
+        this.id=utilities.gerar_id("professor");
+        this.email = utilities.gerar_email(this.nome);
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getTelefone() {
         return telefone;
@@ -50,10 +52,6 @@ public class Professor_responsavel {
         return email;
     }
 
-    public void setEmail() {
-         this.email = Mg.gerar_email(this.nome);
-
-    }
 
     public Disciplina getDisciplina() {
         return disciplina_fk;

@@ -1,5 +1,6 @@
 package Model;
 
+import Util.utilities;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ import java.util.List;
 @Table(name="disciplina")
 public class Disciplina {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
+    @Column(columnDefinition = "varchar(50)",nullable = false)
     private String nome;
     private int Carga_horaria;
 
@@ -20,9 +21,15 @@ public class Disciplina {
 
     //                     NOTAS
 
+
     @OneToMany(mappedBy = "disciplinaN_fk")
     private List<Notas> notas = new ArrayList<>();
+//==============================================================
 
+
+    public Disciplina() {
+        this.id=(int)utilities.gerar_id("disciplina");
+    }
 
 
     public int getCarga_horaria() {
@@ -45,9 +52,6 @@ public class Disciplina {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public List<Professor_responsavel> getProfessor() {
         return professor;

@@ -1,5 +1,6 @@
 package Model;
 
+import Util.utilities;
 import jakarta.persistence.*;
 import org.springframework.boot.context.properties.bind.Name;
 
@@ -9,20 +10,34 @@ import java.util.List;
 @Table(name= "notas")
 public class Notas {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private int id;
+    private long id;
+    @Column(columnDefinition = "decimal(5, 2)")
+    private float nota1;
+    @Column(columnDefinition = "decimal(5, 2)")
+    private float nota2;
+    @Column(columnDefinition = "decimal(5, 2)")
+    private float media;
     //===================MATRICULA=====================
 
     @ManyToOne
     @JoinColumn(name = "matricula_fk")
     private Matricula matricula_fk;
 
-    //             DISCIPLINA
+
+//             DISCIPLINA
 
     @ManyToOne
     @JoinColumn(name = "disciplinaN_fk")
     private Disciplina disciplinaN_fk;
+
+
+    //====================================
+
+
+    public Notas() {
+        this.id=utilities.gerar_id("notas");
+    }
 
     public Disciplina getDisciplina_fk() {
         return disciplinaN_fk;
@@ -32,7 +47,7 @@ public class Notas {
         this.disciplinaN_fk = disciplina_fk;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -46,6 +61,41 @@ public class Notas {
 
     public void setMatricula_fk(Matricula matricula_fk) {
         this.matricula_fk = matricula_fk;
+    }
+
+
+    public float getMedia() {
+        return media;
+    }
+
+    public void setMedia(float nota1,float nota2) {
+        this.media=nota1+nota2/2;
+    }
+
+    public float getNota1() {
+        return nota1;
+    }
+
+    public void setNota1(float nota1) {
+        this.nota1 = nota1;
+        if (nota1>=0 && nota2>=0) {
+            this.setMedia(nota1,nota2);
+
+        }
+    }
+
+    public float getNota2() {
+        return nota2;
+    }
+
+    public void setNota2(float nota2) {
+
+        this.nota2 = nota2;
+        if (nota1>=0 && nota2>=0) {
+            this.setMedia(nota1,nota2);
+
+        }
+
     }
 //========================================
 
