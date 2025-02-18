@@ -13,10 +13,9 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull//Validação em nível de aplicação: Garante que o campo não seja null antes de a entidade ser persistida no banco de dados.
-    @Column(name="cpf",unique = true,nullable = false)//Define restrições no banco de dados: Se nullable = false, cria a coluna no banco como NOT NULL.
-
+    @Column(name="cpf",length = 11,unique = true,nullable = false)//Define restrições no banco de dados: Se nullable = false, cria a coluna no banco como NOT NULL.
     private String cpf;
-    @Column(name="nome",length = 50, nullable = false)
+    @Column(name="nome",columnDefinition = "varchar(50)", nullable = false)
     private String nome;
     @Column(name="dataNasc",length = 10,nullable = false)
     private Date dataNasci;

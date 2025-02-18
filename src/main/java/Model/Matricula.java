@@ -1,5 +1,6 @@
 package Model;
 
+import Util.utilities;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Matricula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="id", unique = true, nullable = false)
     private long id;
+    @Column(columnDefinition = "date")
     private Date dataMatricula;
     @Enumerated(EnumType.STRING)//traduz o valor de status para enum
     @NotNull
@@ -44,7 +46,7 @@ public class Matricula {
 
     //construtor
     public Matricula() {
-        this.id =  ThreadLocalRandom.current().nextInt(10000, 99999);//gerar entre intrevalos. essa vai gerar um id de length =5
+        this.id=utilities.gerar_id("matricula");
     }
 
 
