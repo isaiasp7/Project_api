@@ -14,7 +14,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 @Entity
 public class Matricula {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="id", unique = true, nullable = false)
     private long id;
     @Column(columnDefinition = "date")

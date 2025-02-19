@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "aluno")
 public class Aluno {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull//Validação em nível de aplicação: Garante que o campo não seja null antes de a entidade ser persistida no banco de dados.
     @Column(name="cpf",length = 11,unique = true,nullable = false)//Define restrições no banco de dados: Se nullable = false, cria a coluna no banco como NOT NULL.
     private String cpf;
