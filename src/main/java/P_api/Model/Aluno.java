@@ -49,6 +49,12 @@ public class Aluno {
 
     }
 
+    public Aluno(Aluno tempAluno) {
+
+        this.nome = tempAluno.getNome();
+
+    }
+
 
     public Date getDataNasci() {
         return dataNasci;
@@ -82,16 +88,27 @@ public class Aluno {
         this.cpf = cpf;
     }
 
+
     @JsonGetter("matriculas")
     public Object getMatriculasJson() {
-        return (matriculas != null) ? matriculas : "Aluno não cadastrado em uma turma";
+        return (matriculas != null) ? matriculas.getId() : "Aluno não cadastrado em uma turma";
     }
 
-   /* public int getMatriculas() {
+    @Override
+    public String toString() {
+        return "Aluno{" +
+                "cpf='" + cpf + '\'' +
+                ", nome='" + nome + '\'' +
+                ", dataNasci=" + dataNasci +
+                ", Quant_faltas=" + Quant_faltas +
+                ", matriculas=" + matriculas +
+                '}';
+    }
+
+
+    public int getMatriculas() {
         return matriculas.getId();
     }
 
-    public void setMatriculas(int matriculas) {
-        this.matriculas.setId(matriculas);
-    }*/
+
 }

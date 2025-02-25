@@ -1,7 +1,6 @@
 package P_api.Model;
 
 import Util.utilities;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +21,7 @@ public class Disciplina {
     //=======================PROFESSOR=========================
 
     @OneToMany(mappedBy = "disciplina_fk")//disciplina é nome do atributo na class= professor que recebera o valores
-    private List<Professor_responsavel> professor = new ArrayList<>();
+    private List<Professor> professor = new ArrayList<>();
 
     //                     NOTAS
 
@@ -33,6 +32,18 @@ public class Disciplina {
 
 
     public Disciplina() {
+
+    }
+
+    public Disciplina(Disciplina disciplina) {
+        this.nome = disciplina.getNome();
+        this.Carga_horaria = disciplina.getCarga_horaria();
+        this.id=(int)utilities.gerar_id("disciplina");
+    }
+
+    public Disciplina(String nome, int Carga_horaria) {
+        this.nome = nome;
+        this.Carga_horaria = Carga_horaria;
         this.id=(int)utilities.gerar_id("disciplina");
     }
 
@@ -57,13 +68,9 @@ public class Disciplina {
         return id;
     }
 
-
-   /* public List<Professor_responsavel> getProfessor() {
-
+    public List<Professor> getProfessor() {
         return professor;
     }
 
-    public void setProfessor(List<Professor_responsavel> professor) {
-        this.professor = professor;
-    }*/
+
 }

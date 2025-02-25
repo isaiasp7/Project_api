@@ -47,6 +47,22 @@ public class Turma {
         this.id=(int)utilities.gerar_id("turma");
     }
 
+    public Turma(Turma turma) {
+        this.capacidadeMax = turma.getCapacidadeMax();
+        this.id=(int)utilities.gerar_id("turma");
+        this.nome_sala = turma.getNomeSala();;
+        this.serie = turma.getSerie();
+        this.capacidadeAtual = 0;
+    }
+
+    public Turma(String nome_sala,int serie,int capacidadeMax) {
+        this.capacidadeMax = capacidadeMax;
+        this.id=(int)utilities.gerar_id("turma");
+        this.nome_sala = nome_sala;
+        this.serie = serie;
+        this.capacidadeAtual = 0;
+    }
+
     public long getId() {
         return id;
     }
@@ -75,8 +91,8 @@ public class Turma {
         this.matriculas = matriculas;
     }
 
-    public String getCapacidadeAtual() {
-        return "A capacidade atual da sala é de : " + capacidadeAtual+"\nSendo lotação total de :"+capacidadeMax;
+    public int getCapacidadeAtual() {
+        return this.capacidadeMax;
     }
 
     public void setCapacidadeAtual(int capacidadeAtual) {

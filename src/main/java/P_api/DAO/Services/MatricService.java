@@ -7,6 +7,7 @@ import P_api.DAO.ClassRepository.MatriculasRepository;
 import P_api.Model.Aluno;
 import P_api.Model.Matricula;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Service
 public class MatricService {
-
+    @Autowired
     private MatriculasRepository repository;
 
 
@@ -25,9 +26,7 @@ public class MatricService {
 
     //READ
     public Optional<Matricula> seachID(int id) {
-        Optional<Matricula> aluno =repository.findById(id);
-
-        return aluno;
+        return repository.findById(id);
     }
 
     public List<Matricula> getMatriculas() {

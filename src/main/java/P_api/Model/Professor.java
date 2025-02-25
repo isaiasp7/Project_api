@@ -10,10 +10,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="profesor_respons")
+@Table(name="profesor")
 @Getter
 @Setter
-public class Professor_responsavel{
+public class Professor {
 
     @Id
     @Column(unique = true, nullable = false)
@@ -30,10 +30,25 @@ public class Professor_responsavel{
 
     private Disciplina disciplina_fk;
 
-    public Professor_responsavel() {
-        this.id=(int)utilities.gerar_id("professor");
-        this.email = utilities.gerar_email(this.nome);
+    public Professor() {
+
     }
+    public Professor(Professor professor) {
+        this.email = utilities.gerar_email(this.nome);
+        this.disciplina_fk = professor.getDisciplina();
+        this.id=(int)utilities.gerar_id("professor");
+        this.nome = professor.getNome();
+        this.telefone = professor.getTelefone();
+    }
+
+    public Professor(String nome, Disciplina disciplina_fk, String telefone) {
+        this.email = utilities.gerar_email(this.nome);
+        this.disciplina_fk = disciplina_fk;
+        this.id=(int)utilities.gerar_id("professor");
+        this.nome = nome;
+        this.telefone = telefone;
+    }
+
 
     public long getId() {
         return id;

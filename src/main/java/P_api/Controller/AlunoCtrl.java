@@ -9,18 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import P_api.Factory.GenerateObj;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+
+import static P_api.Factory.GenerateObj.createEntity;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/alunoCrud")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class AlunoCtrl {
     @Autowired
     private AlunoService alunoS;
 
     //============== GET =====================
-    @GetMapping("/getAl")
+    @GetMapping("/getAll")
     public ResponseEntity<List<Aluno>> mostrarAlunos() {
         var alunos = alunoS.getAlunos();
         return ResponseEntity.ok(alunos);
@@ -32,37 +39,40 @@ public class AlunoCtrl {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping("/getID/{id}")
+    public ResponseEntity SearchId(@PathVariable int id) {
+        return ResponseEntity.ok(alunoS.searchAlunoId(id));
+    }
+
 
 
 
     //============== SET =====================
 
-    @PostMapping
-    public ResponseEntity<Aluno> cadastrarAluno(@RequestBody Object aluno) {
-        GenerateObj("aluno") novoAluno = alunoS.addAluno(aluno);
-        novoAluno.setMatriculas(new Matricula());
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoAluno);
+    @PostMapping("create")
+    public ResponseEntity<Aluno> cadastrarAluno(@RequestBody Aluno aluno) {
+        aluno.setMatriculas(new Matricula());
+        alunoS.addAluno(aluno);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(aluno);
     }
 
 
 
     //================ UPDATE ========================
+    //
 
-/*    @PostMapping("/alterNome")
-    public ResponseEntity alterAluno(@RequestBody Aluno aluno) {
-        if (alunoS.SearchAluno(id)==null){
-            Object string = "deu ruim";
-            return ResponseEntity.ok(string);
-        }
-        else{
-            Aluno aluno = alunoS.SearchAluno(id);
-            aluno.setNome(nome);
-            return ResponseEntity.ok(aluno);
-        }
-
-    }*/
 
 
     //================ DELETE ========================
-
+    @GetMapping("/delete")
+    public ResponseEntity<String> deletarAluno(@RequestParam int id) {
+        Aluno temp_aluno =alunoS.searchAlunoId(id);
+        Aluno delA = new Aluno(temp_aluno);
+        Boolean delBoolean = alunoS.deleteAluno(id);
+        if (delBoolean) {
+            return ResponseEntity.ok("Aluno "+delA.getNome()+" com id : "+id+" removido do sistema.");
+        }
+        return ResponseEntity.ok("O id inserido não existe");
+    }
 }

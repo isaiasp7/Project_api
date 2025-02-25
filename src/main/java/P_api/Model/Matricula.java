@@ -1,6 +1,7 @@
 package P_api.Model;
 
 import P_api.Model.Aluno;
+import P_api.Model.StatusEnums.StatusEnum;
 import Util.utilities;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import Model.StatusEnums.StatusEnum.Status;  // Importando a enum Status
+ // Importando a enum Status
 import lombok.Getter;
 import lombok.Setter;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -31,7 +32,7 @@ public class Matricula {
     @Enumerated(EnumType.STRING)//traduz o valor de status para enum
     @NotNull
     @Column(nullable = false)
-    private Status status;
+    private StatusEnum.Status status;
 
     //=============== ALUNO =================
 
@@ -62,9 +63,15 @@ public class Matricula {
         this.id= (int) utilities.gerar_id("matricula");
     }
 
+    public Matricula(Date dataMatricula, StatusEnum.Status status, Turma turma) {
 
-
-    //=============================================================
+        this.dataMatricula = dataMatricula;
+        this.id= (int) utilities.gerar_id("matricula");
+        this.status = status;
+        this.turma = turma;
+        this.turma.setCapacidadeAtual(this.turma.getCapacidadeAtual()+1);
+    }
+//=============================================================
 
 
     public Date getDataMatricula() {
@@ -76,22 +83,28 @@ public class Matricula {
     }
 
 
+    public int getId() {
+        return id;
+    }
 
 
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusEnum.Status status) {
         // Usa Enum.valueOf() para verificar se o status é válido
         try {
-            this.status = Status.valueOf(status.name());
+            this.status = StatusEnum.Status.valueOf(status.name());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Status inválido!");
         }
     }
 
-    public Status getStatus() {
+    public StatusEnum.Status getStatus() {
         return status;
     }
 
+    public Aluno getAluno() {
+        return this.aluno_cpf;
+    }
 
 
 }
