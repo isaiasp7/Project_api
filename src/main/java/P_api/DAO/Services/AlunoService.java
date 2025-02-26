@@ -18,17 +18,17 @@ import java.util.Optional;
 @Service
 public class AlunoService {
     @Autowired
-    private AlunosRepository repository;
+    private AlunosRepository alunoRepository;
     @Autowired
     private MatricService matricService;//Alguns elementos de aluno estao em matricula = id,turma, notas...
 
     public List<Aluno> getAlunos() {
-        return repository.findAll();
+        return alunoRepository.findAll();
     }
     //====================================
 
-    public Aluno SearchAluno(String cpf) {
-        Optional<Aluno> aluno = repository.findByCpf(cpf);
+    public Aluno searchAluno(String cpf) {
+        Optional<Aluno> aluno = alunoRepository.findByCpf(cpf);
         if (aluno.isPresent()) {
             return aluno.get();
         }
@@ -50,15 +50,56 @@ public class AlunoService {
     //=======================================================
 
 
-    public Aluno addAluno(Aluno aluno) {
+    public Aluno addAlunos(Aluno aluno) {
         Aluno novoAluno = new Aluno(aluno.getCpf(), aluno.getNome(), aluno.getDataNasci());
-        return repository.save(novoAluno); // Retorna o aluno cadastrado
+        return alunoRepository.save(novoAluno); // Retorna o aluno cadastrado
     }
 
     //=====================UPDATE============================
 
-    public void saveAluno(Aluno aluno) {
-        repository.save(aluno);
+    public void saveAlunos(Aluno aluno) {
+        alunoRepository.save(aluno);
+    }
+
+
+    public Aluno updateAlunosId(int id, Aluno alunoAtualizado) {
+        Aluno alunoExistente = this.searchAlunoId(id);
+
+        try {
+
+            // Não faz sentido aluno atualizar campos de cadastro
+            if (alunoAtualizado.getEmail() != null) {
+                alunoExistente.setEmail(alunoAtualizado.getEmail());
+            }
+
+            return alunoRepository.save(alunoExistente);
+        } catch (Exception e) {
+            throw new RuntimeException("Aluno não encontrado");
+        }
+
+
+    }
+
+
+    public Aluno updateAlunos(String cpf, Aluno alunoAtualizado) {
+        Aluno alunoExistente = this.searchAluno(cpf);
+
+        try {
+
+            // Não faz sentido aluno atualizar campos de cadastro
+            if (alunoAtualizado.getEmail() != null) {
+                alunoExistente.setEmail(alunoAtualizado.getEmail());
+            }
+            if(alunoAtualizado.getQuant_faltas()!=null) {
+                alunoExistente.setQuant_faltas(alunoAtualizado.getQuant_faltas());
+            }
+            alunoRepository.save(alunoExistente);
+            return alunoExistente;
+        } catch (Exception e) {
+             throw new RuntimeException("Aluno não encontrado");
+        }
+
+
     }
 
     //======================DELETE===========================
@@ -66,13 +107,24 @@ public class AlunoService {
 
     public boolean deleteAluno(int matriculaId) {
         if(this.searchAlunoId(matriculaId) != null) {
-            repository.deleteById(matriculaId);
+            alunoRepository.deleteById(matriculaId);
             return true;
         }else{
             return false;
         }
 
     }
+
+
+    /*
+    public Aluno relacionaMA(String alunocpf,Matricula mat) {//MAtricula e aluno
+        Aluno aluno =  this.searchAluno(alunocpf);
+        aluno.setMatriculas(mat);
+        this.saveAlunos(aluno);
+        alunoRepository.save(aluno);
+        return aluno;
+
+    }*/
 
 
 }

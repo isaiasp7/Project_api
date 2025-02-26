@@ -1,10 +1,11 @@
 package P_api.Model;
 
 import P_api.Model.Matricula;
-import Util.utilities;
+import Util.Utilities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,15 +21,14 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Turma {
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    private int id;
-    @Column(columnDefinition = "varchar(30)", nullable = false)
-    private int serie;
+    private long id;
+    @JsonProperty("Nome da sala")
     @Column(length = 10,unique = true)
     private String nome_sala;
     @Column(name = "capacidadeAtual")
-    private int capacidadeAtual;
-
-
+    @JsonProperty("Capacidade atual")
+    private Integer capacidadeAtual;
+    @JsonProperty("Capacidade Máxima")
     @Column(name = "capacidadeMax")
     private int capacidadeMax;
 
@@ -37,50 +37,44 @@ public class Turma {
     //cascade -> para não quebrar minhas perna com construct mais na frente
     //orphanRemoval -> remove matricula que não estão ligadas a ninguem
     @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)//relacionamento um para muitos
-
+    @JsonProperty("Lista de matriculados na turma")
     private List<Matricula> matriculas = new ArrayList<>();
+
+    //=====================================================
+    @JsonProperty(" Lista de Disciplinas")
+    @OneToMany(mappedBy = "turma")
+    private List<Disciplina> disciplinaList = new ArrayList<>();
 
     //=====================================================
 
 
     public Turma() {
-        this.id=(int)utilities.gerar_id("turma");
+        this.id= Utilities.gerar_id("turma");
     }
 
     public Turma(Turma turma) {
         this.capacidadeMax = turma.getCapacidadeMax();
-        this.id=(int)utilities.gerar_id("turma");
-        this.nome_sala = turma.getNomeSala();;
-        this.serie = turma.getSerie();
+        this.id=Utilities.gerar_id("turma");
+        this.nome_sala = turma.getnome_sala();;
         this.capacidadeAtual = 0;
     }
 
-    public Turma(String nome_sala,int serie,int capacidadeMax) {
+    public Turma(String nome,int capacidadeMax) {
         this.capacidadeMax = capacidadeMax;
-        this.id=(int)utilities.gerar_id("turma");
-        this.nome_sala = nome_sala;
-        this.serie = serie;
+        this.id=Utilities.gerar_id("turma");
+        this.nome_sala = nome;
         this.capacidadeAtual = 0;
     }
 
-    public long getId() {
-        return id;
-    }
 
-    public int getSerie() {
-        return serie;
-    }
 
-    public void setSerie(int serie) {
-        this.serie = serie;
-    }
 
-    public String getNomeSala() {
+    public String getnome_sala() {
         return nome_sala;
     }
 
-    public void setNomeSala(String nomeSala) {
-        this.nome_sala = nomeSala;
+    public void setNomeSala(String nome) {
+        this.nome_sala = nome;
     }
 
     public List<Matricula> getMatriculas() {
@@ -92,7 +86,7 @@ public class Turma {
     }
 
     public int getCapacidadeAtual() {
-        return this.capacidadeMax;
+        return this.capacidadeAtual;
     }
 
     public void setCapacidadeAtual(int capacidadeAtual) {
@@ -108,4 +102,11 @@ public class Turma {
     }
 
 
+    public List<Disciplina> getDisciplinaList() {
+        return disciplinaList;
+    }
+
+    public void setDisciplinaList(Disciplina disciplina) {
+        this.disciplinaList.add(disciplina);
+    }
 }

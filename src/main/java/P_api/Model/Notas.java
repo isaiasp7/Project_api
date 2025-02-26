@@ -2,7 +2,8 @@ package P_api.Model;
 
 import P_api.Model.Disciplina;
 import P_api.Model.Matricula;
-import Util.utilities;
+
+import Util.Utilities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -20,7 +21,7 @@ import java.util.List;
 public class Notas {
     @Id
     @Column(unique = true, nullable = false)
-    private int id;
+    private long id;
     @Column(columnDefinition = "decimal(5, 2)")
     private float nota1;
     @Column(columnDefinition = "decimal(5, 2)")
@@ -47,7 +48,7 @@ public class Notas {
 
 
     public Notas() {
-        this.id=(int)utilities.gerar_id("notas");
+        this.id=(int) Utilities.gerar_id("notas");
     }
 
     public Disciplina getDisciplina_fk() {

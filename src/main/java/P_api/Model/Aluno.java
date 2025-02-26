@@ -1,10 +1,12 @@
 package P_api.Model;
 
+import Util.Utilities;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.antlr.v4.runtime.misc.NotNull;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,8 +30,11 @@ public class Aluno {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dataNasci;
 
-    @Column(name="quantFalt",length = 3, nullable = false)
-    private int Quant_faltas;
+    @Column(name="quantFalt",length = 3)
+    private Integer Quant_faltas=0;
+
+    @Column(name="email")
+    private String email;
 
     //==========================================
     @OneToOne(mappedBy = "aluno_cpf", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)//relacionamento um para muitos
@@ -39,9 +44,12 @@ public class Aluno {
 
     /*======================================*/
     public Aluno(String cpf, String nome, Date dataNasci) {
+
         this.cpf = cpf;
         this.nome = nome;
         this.dataNasci = dataNasci;
+        this.email = Utilities.gerar_email(this.nome);
+
 
 
     }
@@ -49,11 +57,7 @@ public class Aluno {
 
     }
 
-    public Aluno(Aluno tempAluno) {
 
-        this.nome = tempAluno.getNome();
-
-    }
 
 
     public Date getDataNasci() {
@@ -72,7 +76,7 @@ public class Aluno {
         this.nome = nome;
     }
 
-    public int getQuant_faltas() {
+    public Integer getQuant_faltas() {
         return Quant_faltas;
     }
 
@@ -89,26 +93,21 @@ public class Aluno {
     }
 
 
-    @JsonGetter("matriculas")
-    public Object getMatriculasJson() {
-        return (matriculas != null) ? matriculas.getId() : "Aluno não cadastrado em uma turma";
+
+    public Object getMatriculas() {
+        if (matriculas != null) {
+            return matriculas.getId();
+        }else{
+            return "Aluno ainda não associado a uma turma";
+        }
+
     }
 
-    @Override
-    public String toString() {
-        return "Aluno{" +
-                "cpf='" + cpf + '\'' +
-                ", nome='" + nome + '\'' +
-                ", dataNasci=" + dataNasci +
-                ", Quant_faltas=" + Quant_faltas +
-                ", matriculas=" + matriculas +
-                '}';
+    public String getEmail() {
+        return this.email;
     }
 
-
-    public int getMatriculas() {
-        return matriculas.getId();
+    public void setEmail(String email) {
+        this.email = email;
     }
-
-
 }

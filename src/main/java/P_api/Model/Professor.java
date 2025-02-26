@@ -2,7 +2,8 @@ package P_api.Model;
 
 
 import P_api.Model.Disciplina;
-import Util.utilities;
+import Util.Utilities;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ public class Professor {
 
     @Id
     @Column(unique = true, nullable = false)
-    private int id;
+    private long id;
     @Column(columnDefinition = "varchar(50)",unique = true, nullable = false)
     private String nome;
     @Column(columnDefinition = "varchar(50)",unique = true)
@@ -34,17 +35,17 @@ public class Professor {
 
     }
     public Professor(Professor professor) {
-        this.email = utilities.gerar_email(this.nome);
+        this.email = Utilities.gerar_email(this.nome);
         this.disciplina_fk = professor.getDisciplina();
-        this.id=(int)utilities.gerar_id("professor");
+        this.id= Utilities.gerar_id("professor");
         this.nome = professor.getNome();
         this.telefone = professor.getTelefone();
     }
 
     public Professor(String nome, Disciplina disciplina_fk, String telefone) {
-        this.email = utilities.gerar_email(this.nome);
+        this.email = Utilities.gerar_email(this.nome);
         this.disciplina_fk = disciplina_fk;
-        this.id=(int)utilities.gerar_id("professor");
+        this.id=(int)Utilities.gerar_id("professor");
         this.nome = nome;
         this.telefone = telefone;
     }

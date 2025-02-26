@@ -18,8 +18,10 @@ public class ProfessorCtrl {
     @Autowired
     ProfService profService;
 
+    //============= CREATE =================================
+
     @PostMapping("/create")
-    public ResponseEntity<Professor> createProfessor(@RequestBody Professor professor) {
+    public ResponseEntity<Professor> createProfessor(@RequestBody Professor professor) {//nome,disciplina_fk,telefone
         Professor prof = profService.newProfessor(professor);
         return ResponseEntity.ok(prof);
     }
@@ -29,4 +31,6 @@ public class ProfessorCtrl {
             Disciplina disc=profService.relacionaProf_Disc(Pid, Did);
             return ResponseEntity.ok(disc);
     }
+
+
 }

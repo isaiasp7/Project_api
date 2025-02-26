@@ -1,6 +1,7 @@
 package P_api.Model;
 
-import Util.utilities;
+import Util.Utilities;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,50 +12,52 @@ import java.util.List;
 @Table(name="disciplina")
 @Getter
 @Setter
+//Deu ruim
 public class Disciplina {
     @Id
-    private int id;
+    private long id;
     @Column(columnDefinition = "varchar(50)",nullable = false)
     private String nome;
-    private int Carga_horaria;
+
+    @JsonProperty("Carga_Horária")
+    private int cargaHoraria;
 
     //=======================PROFESSOR=========================
 
     @OneToMany(mappedBy = "disciplina_fk")//disciplina é nome do atributo na class= professor que recebera o valores
     private List<Professor> professor = new ArrayList<>();
 
-    //                     NOTAS
+    //====================== NOTAS ============================
 
 
     @OneToMany(mappedBy = "disciplinaN_fk")
     private List<Notas> notas = new ArrayList<>();
+
+    //====================== TURMA ============================
+    @ManyToOne
+    @JoinColumn(name = "turma_fk")
+    private Turma turma;
+
+
 //==============================================================
 
 
     public Disciplina() {
-
+        this.id= Utilities.gerar_id("disciplina");
     }
 
     public Disciplina(Disciplina disciplina) {
         this.nome = disciplina.getNome();
-        this.Carga_horaria = disciplina.getCarga_horaria();
-        this.id=(int)utilities.gerar_id("disciplina");
+        this.cargaHoraria = disciplina.getCargaHoraria();
+        this.id= Utilities.gerar_id("disciplina");
     }
 
-    public Disciplina(String nome, int Carga_horaria) {
+    public Disciplina(String nome, int cargaHoraria) {
         this.nome = nome;
-        this.Carga_horaria = Carga_horaria;
-        this.id=(int)utilities.gerar_id("disciplina");
+        this.cargaHoraria = cargaHoraria;
+        this.id=Utilities.gerar_id("disciplina");
     }
 
-
-    public int getCarga_horaria() {
-        return Carga_horaria;
-    }
-
-    public void setCarga_horaria(int carga_horaria) {
-        Carga_horaria = carga_horaria;
-    }
 
     public String getNome() {
         return nome;
@@ -65,12 +68,29 @@ public class Disciplina {
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public List<Professor> getProfessor() {
         return professor;
     }
 
+    public List<Object> getTurma() {
+        List<Object>  lista = new ArrayList<>();
+        lista.add(turma.getId());
+        lista.add(turma.getnome_sala());
+        return lista;
+    }
 
+    public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
+
+    public int getCargaHoraria() {
+        return this.cargaHoraria;
+    }
+
+    public void setCargaHoraria(int cargaHoraria) {
+        this.cargaHoraria= cargaHoraria;
+    }
 }
