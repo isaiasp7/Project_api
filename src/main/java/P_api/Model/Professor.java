@@ -4,46 +4,46 @@ package P_api.Model;
 import P_api.Model.Disciplina;
 import Util.Utilities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name="profesor")
-@Getter
-@Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Professor {
 
     @Id
     @Column(unique = true, nullable = false)
     private long id;
-    @Column(columnDefinition = "varchar(50)",unique = true, nullable = false)
+    @Column(columnDefinition = "varchar(50)", nullable = false)
     private String nome;
     @Column(columnDefinition = "varchar(50)",unique = true)
     private String email;
     private String telefone;
 
     //====================DISCIPLINA=======================
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "disciplina_id")//cria uma tabela chamada disciplina_id em professor
-
     private Disciplina disciplina_fk;
 
     public Professor() {
 
     }
     public Professor(Professor professor) {
-        this.email = Utilities.gerar_email(this.nome);
+        this.email = Utilities.gerar_email(this.getNome());
         this.disciplina_fk = professor.getDisciplina();
         this.id= Utilities.gerar_id("professor");
-        this.nome = professor.getNome();
+         this.setNome(professor.getNome());
         this.telefone = professor.getTelefone();
     }
 
     public Professor(String nome, Disciplina disciplina_fk, String telefone) {
-        this.email = Utilities.gerar_email(this.nome);
+        this.email = Utilities.gerar_email(this.getNome());
         this.disciplina_fk = disciplina_fk;
         this.id=(int)Utilities.gerar_id("professor");
         this.nome = nome;
@@ -69,7 +69,10 @@ public class Professor {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        if (nome!=null) {
+            this.nome = nome;
+        }
+
     }
 
     public String getEmail() {

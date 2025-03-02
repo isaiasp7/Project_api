@@ -22,20 +22,29 @@ public class DisciplinaCtrl {
        return ResponseEntity.ok(disc);
    }
 
+   @GetMapping("/search")
+    public ResponseEntity<Disciplina> searchDisciplina(@RequestParam int id) {
+        discService.getDisciplinaById(id);
+        return ResponseEntity.ok(discService.getDisciplinaById(id));
+    }
+
+
    @PostMapping("/create")
-    public ResponseEntity<Disciplina> createDisciplina(@RequestBody Disciplina disciplina) {
+    public ResponseEntity<Disciplina> createDisc(@RequestBody Disciplina disciplina) {//nome,cargaHoraria
        Disciplina disc = discService.createDisciplina(disciplina);
        return ResponseEntity.ok(disc);
    }
 
-   @PostMapping("/search")
-    public ResponseEntity<Disciplina> searchDisciplina(@RequestParam int id) {
-            discService.getDisciplinaById(id);
-            return ResponseEntity.ok(discService.getDisciplinaById(id));
+   @PutMapping("/updateDisc/{id}")
+   public ResponseEntity<Disciplina> updateDisc(@PathVariable long id,@RequestBody Disciplina alterDisc) {// nome,cargaHoraria,professor(ainda não testado = notas,turma)
+       Disciplina disc = discService.updateDisciplina(id,alterDisc);
+       return ResponseEntity.ok(disc);
    }
 
 
-   @GetMapping("/delete")
+
+
+   @DeleteMapping("/delete")
     public ResponseEntity<String>  deleteDisciplina(@RequestParam int id) {
        discService.deleteDisciplinaById(id);
        return ResponseEntity.ok("Deleted Disciplina");
@@ -43,7 +52,7 @@ public class DisciplinaCtrl {
 
    //=============== RELACIONAMENTOS ======================================
 
-    @PutMapping("/relacionaDT")
+    @PutMapping("/relacionaDT")//discpilna e turma
     public ResponseEntity relacioDT(@RequestBody RelacionaDTRequest lista) {//Racionana turma a Disciplina
        Disciplina relacionamento =discService.relacionaDT(lista.getIdDisciplina(), lista.getIdTurma());
         return ResponseEntity.ok(relacionamento);

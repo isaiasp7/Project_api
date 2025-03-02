@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Table(name= "notas")
-@Getter
-@Setter
+
 public class Notas {
     @Id
     @Column(unique = true, nullable = false)

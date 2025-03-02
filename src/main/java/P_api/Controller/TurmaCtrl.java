@@ -24,14 +24,14 @@ public class TurmaCtrl {
     //================ CREATE ====================
 
     @PostMapping("createT")
-    public ResponseEntity<Turma> createTurma(@RequestBody Turma turma) {
+    public ResponseEntity<Turma> createTurma(@RequestBody Turma turma) {//nome, capacidadeMax
         Turma Novaturma = turmaService.createTurma(turma);
         return ResponseEntity.ok(Novaturma);
     }
 
 
 
-    @PostMapping("/alterCapA/{id}&{cap}")
+    @PostMapping("/alterCapacidade/{id}&{cap}")
     public ResponseEntity<?> alterCapA(@PathVariable int id, @PathVariable int cap) {
         return turmaService.alterarCapacidadeA(id,cap);
 

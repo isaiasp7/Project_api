@@ -17,8 +17,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 @Table(name="matricula")
 @Entity
-@Getter
-@Setter
 
 public class Matricula {
     @Id
@@ -110,5 +108,11 @@ public class Matricula {
         return this.aluno_cpf;
     }
 
+    public Aluno getAluno_cpf() {
+        return aluno_cpf;
+    }
 
+    public void setAluno_cpf(Aluno aluno_cpf) {
+        this.aluno_cpf = aluno_cpf;
+    }
 }

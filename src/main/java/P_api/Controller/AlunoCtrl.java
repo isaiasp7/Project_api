@@ -1,7 +1,7 @@
 package P_api.Controller;
 
 import P_api.DAO.Services.AlunoService;
-import P_api.Factory.GenerateObj;
+
 import P_api.Model.Aluno;
 import P_api.Model.Matricula;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import P_api.Factory.GenerateObj;
-
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 
-import static P_api.Factory.GenerateObj.createEntity;
+
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController

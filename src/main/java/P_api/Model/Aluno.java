@@ -14,8 +14,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "aluno")
-@Getter
-@Setter
 
 public class Aluno {
     @Id
@@ -101,6 +99,10 @@ public class Aluno {
             return "Aluno ainda não associado a uma turma";
         }
 
+    }
+
+    public void setMatriculas(Matricula matriculas) {
+        this.matriculas = matriculas;
     }
 
     public String getEmail() {

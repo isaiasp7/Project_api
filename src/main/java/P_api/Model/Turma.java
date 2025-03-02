@@ -2,10 +2,7 @@ package P_api.Model;
 
 import P_api.Model.Matricula;
 import Util.Utilities;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,14 +19,12 @@ public class Turma {
     @Id
     @Column(name = "id", unique = true, nullable = false)
     private long id;
-    @JsonProperty("Nome da sala")
+
     @Column(length = 10,unique = true)
     private String nome_sala;
-    @Column(name = "capacidadeAtual")
-    @JsonProperty("Capacidade atual")
-    private Integer capacidadeAtual;
-    @JsonProperty("Capacidade Máxima")
-    @Column(name = "capacidadeMax")
+
+
+    private int capacidadeAtual;
     private int capacidadeMax;
 
     //====================================================
@@ -55,7 +50,7 @@ public class Turma {
     public Turma(Turma turma) {
         this.capacidadeMax = turma.getCapacidadeMax();
         this.id=Utilities.gerar_id("turma");
-        this.nome_sala = turma.getnome_sala();;
+        this.nome_sala = turma.getNome_sala();;
         this.capacidadeAtual = 0;
     }
 
@@ -67,8 +62,10 @@ public class Turma {
     }
 
 
-
-
+/*
+    public long getId() {
+        return id;
+    }
     public String getnome_sala() {
         return nome_sala;
     }
@@ -108,5 +105,5 @@ public class Turma {
 
     public void setDisciplinaList(Disciplina disciplina) {
         this.disciplinaList.add(disciplina);
-    }
+    }*/
 }

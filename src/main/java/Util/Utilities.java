@@ -1,9 +1,12 @@
 package Util;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Utilities {
-        public static String gerar_email(String nome){
+        public static String gerar_email(String nome){//não ta chegando nada
                 String[] lista_name = nome.split(" ");
                 String email = "";
                 try {
@@ -12,7 +15,7 @@ public class Utilities {
 
                         }
                         else{
-                                email = lista_name[0].concat(".");
+                                email = lista_name[0];
                         }
                 } catch (Exception e) {
                         System.out.println("====================================");
@@ -27,37 +30,40 @@ public class Utilities {
 
 
         }
-        public static long gerar_id(String  tipo){
-                 long id ;
-                switch(tipo){
+        public static long gerar_id(String  tipo){//revisto
+                 long id = switch (tipo) {
+                     case "notas" -> ThreadLocalRandom.current().nextLong(100000000, 999999999);//length=9
+                     case "matricula" ->
+                             ThreadLocalRandom.current().nextLong(10000000, 99999999);//gerar entre intrevalos. essa vai gerar um id de length =8
+                     case "professor" -> ThreadLocalRandom.current().nextLong(100000, 999999);//length = 6
+                     case "disciplina" ->
+                             ThreadLocalRandom.current().nextLong(10000, 99999);//gerar entre intrevalos. essa vai gerar um id de length =5
+                     case "turma" -> ThreadLocalRandom.current().nextLong(0, 9999);
+                     default -> throw new IllegalArgumentException("Tipo de ID desconhecido: " + tipo);
+                 };
 
-                        case "notas":
-                                id= ThreadLocalRandom.current().nextLong(100000000,999999999);//length=9
-                                break;
-                        case "matricula":
-                                id =  ThreadLocalRandom.current().nextLong(10000000, 99999999);//gerar entre intrevalos. essa vai gerar um id de length =8
-                                break;
+            return id;
 
-                        case "professor":
-                                id= ThreadLocalRandom.current().nextLong(100000, 999999);//length = 6
-                                break;
-
-                        case "disciplina":
-                                id= ThreadLocalRandom.current().nextLong(10000, 99999);//gerar entre intrevalos. essa vai gerar um id de length =5
-                                break;
-
-                        case "turma":
-                                id= ThreadLocalRandom.current().nextLong(0, 9999);
-                                break;
-                        default:
-                                throw new IllegalArgumentException("Tipo de ID desconhecido: " + tipo);
+        }
 
 
+        public static HashMap<String,Object> reflexao(Object obj){
+                HashMap<String,Object> mapa = new HashMap<>();
+                Class<?> reflexion = obj.getClass();
+                for (Field field : reflexion.getDeclaredFields()) {
+                        field.setAccessible(true); // Permite acesso a campos privados
+                        try {
+                                Object value = field.get(obj); // Obtém o valor do campo para o objeto
 
+                                if(value!=null){
+                                        mapa.put(field.getName(),value);
+                                }
+
+                        } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                        }
                 }
-
-                return id;
-
+                return mapa;
         }
 
 }

@@ -1,7 +1,11 @@
 package P_api.Factory;
 
 
+import P_api.DTO.DisciplinaDTO;
+import P_api.DTO.ProfDiscDTO;
 import P_api.Model.*;
+
+
 
 public class GenerateObj {
 
@@ -9,17 +13,14 @@ public class GenerateObj {
 
     //TBM PODE RECEBER MAIS DE UM PARAMETRO COMO NOME E O QUE DESEJA FAZER
 
-        public static Object createEntity(String entity ) {
+      /*  public static Object chamaDTO(String entity) {
             return switch (entity) {
-                case "aluno" -> new Aluno();
-                case "disciplina" -> new Disciplina();
-                case "matricula" -> new Matricula();
-                case "notas" -> new Notas();
-                case "professor" -> new Professor();
-                case "turma" -> new Turma();
-                default -> throw new IllegalArgumentException("Entidade desconhecida: " + entity);
+                case "disciplina" -> new DisciplinaDTO();
+                case "PD" -> ProfDiscDTO.toProfessorDTO(Professor professor);
+
+
             };
-        }
+        }*/
 
 
 }
