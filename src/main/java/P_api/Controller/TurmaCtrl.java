@@ -1,6 +1,7 @@
 package P_api.Controller;
 
 import P_api.DAO.Services.TurmaService;
+import P_api.DTO.TurmaDTO;
 import P_api.Model.Turma;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,15 @@ public class TurmaCtrl {
 
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Turma>> getAll(){
+    public ResponseEntity<List<TurmaDTO>> getAll(){
        var local= turmaService.getTurmas();
         return ResponseEntity.ok(local);
+    }
+
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<?> getById(@PathVariable long id){
+        Turma turma = turmaService.getByID(id);
+        return ResponseEntity.ok(turma);
     }
 
     //================ CREATE ====================
@@ -31,9 +38,16 @@ public class TurmaCtrl {
 
 
 
-    @PostMapping("/alterCapacidade/{id}&{cap}")
-    public ResponseEntity<?> alterCapA(@PathVariable int id, @PathVariable int cap) {
-        return turmaService.alterarCapacidadeA(id,cap);
+    @PutMapping("/alterCapacidade/{id}&{cap}")
+    public ResponseEntity<?> alterCapAc(@PathVariable int id, @PathVariable int cap) {
+        Turma turma =turmaService.alterarCapacidadeA(id,cap);
+        return ResponseEntity.ok(turma);
+
+    }
+    @PutMapping("/alterNomes/{id}")
+    public ResponseEntity<?> alterNome(@PathVariable long id, @RequestParam String turmaN) {
+        Object turma = turmaService.alterarNome(id,turmaN);
+        return ResponseEntity.ok(turma);
 
     }
 }

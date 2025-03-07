@@ -2,10 +2,10 @@ package P_api.Controller;
 
 import P_api.DAO.Services.AlunoService;
 import P_api.DAO.Services.MatricService;
-import P_api.Model.Aluno;
+import P_api.DTO.MatriculaDTO;
+import P_api.DTO.RelacionaAMRequest;
 import P_api.Model.Matricula;
 import P_api.Model.Turma;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +20,17 @@ import java.util.Optional;
 @RequestMapping("/MatriCrud")
 public class MatriculaCtrl {
     @Autowired
-    private MatricService matric;
+    private MatricService matricService;
 
     @Autowired
-    private AlunoService aluno;
+    private AlunoService alunoService;
 
     //============== READ ===================
 
     @GetMapping
-    public ResponseEntity<List<Matricula>> getAll() {
+    public ResponseEntity<List<MatriculaDTO>> getAll() {
         try {
-            List<Matricula> mat = matric.getMatriculas();
+            List<MatriculaDTO> mat = matricService.getMatriculas();
             if (mat.isEmpty()) {
                 return ResponseEntity.noContent().build(); // Retorna 204 se a lista estiver vazia
             }
@@ -43,40 +43,86 @@ public class MatriculaCtrl {
 
     @GetMapping("/getID/{id}")
     public ResponseEntity SearchId(@PathVariable int id) {
-        Optional<Matricula> aluno = matric.seachID(id);
+        Optional<Matricula> aluno = matricService.seachID(id);
         return ResponseEntity.ok(aluno);
 
     }
+    //================== CREATE =========================
+    @PostMapping("/relacionaMT")
+    //==============================
+    //Cria uma nova Matricula cadastrada em uma turma existente
+    //==============================
+    public ResponseEntity createMatric_Turma(@RequestBody RelacionaAMRequest relacao) {//Recebe alunoCpf, turmaID
+        Matricula newMatricula = matricService.createMatricula(relacao.getAlunoCpf(),relacao.getTurmaID());
+        return ResponseEntity.ok(newMatricula);
+    }
+
+    @PostMapping("/createM/{cpf}")
+    //==============================
+    //Cria uma nova Matricula para o alunoCpf sem turma
+    //==============================
+    public ResponseEntity<?> relacionaMatric_Aluno(@PathVariable String cpf) {//dataMatricula,status,turma
+        try {
+            var aluno = matricService.relacionaMA(cpf);
+            return ResponseEntity.ok(aluno);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao relacionar aluno com matrícula: " + e.getMessage());
+        }
+    }
+
+
+    //================== DELETE =========================
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteMatricula(@PathVariable long id, @RequestParam(required = false) boolean deleteAluno) {//?deleteAluno=
+
+        if (deleteAluno) {
+            // Lógica para deletar a matrícula e o aluno
+            var retorno =matricService.deleteMatComp(id);
+            return ResponseEntity.ok(retorno);
+        } else {
+            // Lógica para deletar apenas a matrícula
+            var retorno = matricService.deletMatricula(id);
+            return ResponseEntity.ok(retorno);
+        }
+    }
+
 
     //================== RELACIONAMENTO =========================
 
-    @PostMapping({"/cpf/{cpf}"})//cadastrar uma matricula a um aluno existente
+    /*@PostMapping({"/cpf/{cpf}"})//cadastrar uma matricula a um aluno existente
     public ResponseEntity<?> create(@PathVariable String cpf,@RequestBody Matricula matricula) {
         try {
-            Aluno inscrito = aluno.searchAluno(cpf);
-            if (aluno == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado com o CPF: " + cpf);
+            Aluno inscrito = alunoService.searchAluno(cpf);
+            if (inscrito != null) {
+                matricula.setAluno_cpf(inscrito);
+                inscrito.setMatriculas(matricula);
+                alunoService.saveAlunos(inscrito);
+                return ResponseEntity.ok(inscrito);
+
             }
-            matricula.setAluno_cpf(inscrito);
-            inscrito.setMatriculas(matricula);
-            aluno.saveAlunos(inscrito);
-            return ResponseEntity.ok(inscrito);
+            else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado com o CPF: " + cpf);
+
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }
+    }*/
 
 
 
     @PutMapping("/relacoesMT")
-    public ResponseEntity createRelacaoMT(@RequestParam int id, @RequestBody Turma dto) {
-            matric.relacionarMT(id, dto);
-            Matricula aluno = matric.seachID(id).orElseThrow(() -> new RuntimeException("Matrícula não encontrada"));
+    //==============================
+    //Associa matricula a uma turma
+    //==============================
+    public ResponseEntity relacaoMatric_Turma(@RequestParam int id, @RequestBody Turma dto) {
+            matricService.relacionarMT(id, dto);
+            Matricula aluno = matricService.seachID(id).orElseThrow(() -> new RuntimeException("Matrícula não encontrada"));
             ResponseEntity resposta = new ResponseEntity(aluno, HttpStatus.OK);
             return resposta;
 
     }
+
 
 
 

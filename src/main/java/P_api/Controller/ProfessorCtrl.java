@@ -2,6 +2,7 @@ package P_api.Controller;
 
 import P_api.DAO.Services.ProfService;
 import P_api.DTO.ProfDiscDTO;
+import P_api.DTO.RelacionaPDRequest;
 import P_api.Model.Disciplina;
 import P_api.Model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/ProfCrud")
@@ -20,8 +20,8 @@ public class ProfessorCtrl {
     ProfService profService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Professor>> getAll(){
-        List<Professor> listP =profService.getAllProfessores();
+    public ResponseEntity<List<ProfDiscDTO>> getAll(){
+        List<ProfDiscDTO> listP =profService.getAllProfessores();
         return ResponseEntity.ok(listP);
     }
 
@@ -36,13 +36,37 @@ public class ProfessorCtrl {
 
     @PostMapping("/create")
     public ResponseEntity<Professor> createProfessor(@RequestBody Professor professor) {//nome,telefone
+        System.out.println("==================================");
+        System.out.println("CONTROLLER  : "+ professor.getNome());
+        System.out.println("==================================");
         Professor prof = profService.newProfessor(professor);
+
         return ResponseEntity.ok(prof);
     }
 
+
+    @PutMapping("/updateP/{id}")
+    public ResponseEntity<ProfDiscDTO> updateP(@PathVariable long id,@RequestBody Professor professor) {
+        Professor prof = profService.updateProfessor(id, professor);
+        return ResponseEntity.ok(ProfDiscDTO.toProfessorDTO(prof));
+    }
+
+    //============= DELETE =================================
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteProfessor(@PathVariable long id) {
+        try {
+            return ResponseEntity.ok(profService.removeProfessor(id));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao deletar professor: " + e.getMessage());
+        }
+
+    }
+    //============= RELACIONAMENTO ========================
+
     @PostMapping("/AddDisciplina")
-    public ResponseEntity<Disciplina> cadastrarProfessor_Disc(int Pid, int Did) {
-            Disciplina disc=profService.relacionaProf_Disc(Pid, Did);
+    public ResponseEntity<Disciplina> cadastrarProfessor_Disc(@RequestBody RelacionaPDRequest id) {
+            Disciplina disc=profService.relacionaProf_Disc(id.getPid(), id.getDid());
             return ResponseEntity.ok(disc);
     }
 

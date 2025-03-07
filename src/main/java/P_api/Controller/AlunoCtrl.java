@@ -1,22 +1,14 @@
 package P_api.Controller;
 
 import P_api.DAO.Services.AlunoService;
-
 import P_api.Model.Aluno;
 import P_api.Model.Matricula;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.lang.reflect.Field;
+
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/alunoCrud")
@@ -88,15 +80,7 @@ public class AlunoCtrl {
 
     //================== RELACIONAMENTO ========================
 
-    /*@PostMapping("/relacionaMA/{cpf}")
-    public ResponseEntity<?> relacionaMA(@PathVariable String cpf, @RequestBody Matricula mat) {//dataMatricula,status,turma
-        try {
-            var aluno = alunoS.relacionaMA(cpf,mat);
-            return ResponseEntity.ok(aluno);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao relacionar aluno com matrícula: " + e.getMessage());
-        }
-    }*/
+
 
 
 

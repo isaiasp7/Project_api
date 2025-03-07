@@ -1,20 +1,18 @@
 package P_api.DAO.Services;
 
 
-
-
 import P_api.DAO.ClassRepository.AlunosRepository;
 import P_api.Model.Aluno;
 import P_api.Model.Matricula;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+@Slf4j
 @Service
 public class AlunoService {
     @Autowired
@@ -42,7 +40,7 @@ public class AlunoService {
         Matricula matricula = matricService.seachID(matriculaId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Matrícula não encontrada"));
 
-        return matricula.getAluno(); // Retorna o aluno relacionado à matrícula
+        return matricula.getAluno_cpf(); // Retorna o aluno relacionado à matrícula
     }
 
 
@@ -115,16 +113,9 @@ public class AlunoService {
 
     }
 
+    //====================== RELACIONAMENTO ===========================
 
-    /*
-    public Aluno relacionaMA(String alunocpf,Matricula mat) {//MAtricula e aluno
-        Aluno aluno =  this.searchAluno(alunocpf);
-        aluno.setMatriculas(mat);
-        this.saveAlunos(aluno);
-        alunoRepository.save(aluno);
-        return aluno;
 
-    }*/
 
 
 }

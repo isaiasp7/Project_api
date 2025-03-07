@@ -1,13 +1,17 @@
 package P_api.DAO.Services;
 
 import P_api.DAO.ClassRepository.TurmasRepository;
+import P_api.DTO.TurmaDTO;
 import P_api.Model.Turma;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class TurmaService {
     @Autowired
@@ -15,23 +19,33 @@ public class TurmaService {
     @Autowired
     private TurmasRepository turmasRepository;
 
-    public List<Turma> getTurmas() {
-        List<Turma> sala =turmasRepository.findAll();
+
+    public List<TurmaDTO> getTurmas() {
+        List<TurmaDTO> sala =turmasRepository.findAll()
+                .stream()
+                .map(TurmaDTO::new) // Converte cada Turma para TurmaDTO
+                .collect(Collectors.toList());
         return sala;
     }
+    public Turma getByID(long id) {
+        Turma sala =turmaRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Matricula não encontrada"));;
+        return sala;
+    }
+
+
 
     public Turma createTurma(Turma turma) {
 
         Turma newTurma = new Turma(turma);
         System.out.println("=======================");
-        System.out.println(turma.getNome_sala());
+        System.out.println(turma.getNome());
         System.out.println(turma.getCapacidadeMax());
         System.out.println("=======================");
         return turmasRepository.save(newTurma);
 
     }
 
-    public ResponseEntity<?> alterarCapacidadeA(int id, int novaCapacidade) {
+    public Turma alterarCapacidadeA(int id, int novaCapacidade) {
         // Encontrar a sala pelo id
         Optional<Turma> salaOptional = turmasRepository.findById((long) id);
 
@@ -42,9 +56,29 @@ public class TurmaService {
 
             // Salva as alterações no banco
             turmasRepository.save(sala);
-            return ResponseEntity.ok(turmasRepository.findById((long) id));
+            return sala;
         } else {
             throw new RuntimeException("Sala não encontrada!");
         }
     }
+    //============================
+    //O spring trata de maneira default os erros de sql
+    //******************** TRATAR ERRO DE REPETIÇÃO DE NOME *********************
+    //============================
+   public Object alterarNome(long id, String nome) {
+        Turma turma = this.getByID(id);
+        try{
+            turma.setNome(nome);
+            turmaRepository.save(turma);
+            return turma;
+            } catch (DataIntegrityViolationException e) {
+             return "Já existe um turma com o nome " + nome + "!";
+            }
+
+
+       }
+
+
+
+
 }

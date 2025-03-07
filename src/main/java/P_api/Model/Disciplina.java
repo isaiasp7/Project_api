@@ -14,9 +14,10 @@ import java.util.List;
 @Table(name="disciplina")
 @Getter
 @Setter
+/*
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonIgnoreProperties(ignoreUnknown = true)//ignora campos nulos, usado para update
-
+*/
 public class Disciplina {
     @Id
     private long id;
@@ -36,6 +37,7 @@ public class Disciplina {
 
 
     @OneToMany(mappedBy = "disciplinaN_fk")
+    @JsonIgnore
     private List<Notas> notas = new ArrayList<>();
 
     //====================== TURMA ============================
@@ -81,7 +83,7 @@ public Disciplina(){}
             if (turma != null) {
                 List<Object> lista = new ArrayList<>();
                 lista.add(turma.getId());
-                lista.add(turma.getNome_sala());
+                lista.add(turma.getNome());
                 return  lista;
             }else{
                 return null;

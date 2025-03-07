@@ -22,8 +22,8 @@ public class DisciplinaCtrl {
        return ResponseEntity.ok(disc);
    }
 
-   @GetMapping("/search")
-    public ResponseEntity<Disciplina> searchDisciplina(@RequestParam int id) {
+   @GetMapping("/search/{id}")
+    public ResponseEntity<Disciplina> searchDisciplina(@PathVariable int id) {
         discService.getDisciplinaById(id);
         return ResponseEntity.ok(discService.getDisciplinaById(id));
     }
@@ -53,7 +53,7 @@ public class DisciplinaCtrl {
    //=============== RELACIONAMENTOS ======================================
 
     @PutMapping("/relacionaDT")//discpilna e turma
-    public ResponseEntity relacioDT(@RequestBody RelacionaDTRequest lista) {//Racionana turma a Disciplina
+    public ResponseEntity relacioDisc_Turm(@RequestBody RelacionaDTRequest lista) {//Recebe idturma a idDisciplina
        Disciplina relacionamento =discService.relacionaDT(lista.getIdDisciplina(), lista.getIdTurma());
         return ResponseEntity.ok(relacionamento);
    }

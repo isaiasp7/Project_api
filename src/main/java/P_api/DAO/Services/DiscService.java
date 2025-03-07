@@ -8,11 +8,8 @@ import P_api.Model.Professor;
 import P_api.Model.Turma;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -70,19 +67,19 @@ public class DiscService {
         return null;
     }
 
-    @Transactional
+
     //==================
     //Problema: nome é necessario para associar prof a disc
     //====================
     public Disciplina updateDisciplina( long id, Disciplina alterDiscService) {
         Disciplina disc = this.getDisciplinaById(id);
-        Object teste =reflexao(alterDiscService).entrySet();
+
         try {
             for (Map.Entry<String, Object> camposAlter : reflexao(alterDiscService).entrySet()) {
                 String key = camposAlter.getKey();
                 Object val = camposAlter.getValue();
-                Field field = Disciplina.class.getDeclaredField(key);
-                field.setAccessible(true);
+                Field field = Disciplina.class.getDeclaredField(key);//pega o atributo
+                field.setAccessible(true);//isso é usado para dizer que mesmo o atributo sendo privado posso acessa-lo
                 if(key=="id"){//O HIBERNATE PODE ESTAR GERANDO UM NOVO IID  PARA DISCIPLNA POR CONTA DO ID DO PROFESSOR PASSADO
                     /*System.out.println("=====================");
                     System.out.println("ENCONTREI O ID, MAS DEIXEI QUIETO => "+key+" : "+val);

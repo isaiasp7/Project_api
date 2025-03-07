@@ -13,6 +13,7 @@ public class ProfDiscDTO {
     private String telefone;
     private DisciplinaDTO disciplina;
 
+
     public static ProfDiscDTO toProfessorDTO(Professor professor) {
         ProfDiscDTO dto = new ProfDiscDTO();
         dto.setId(professor.getId());
@@ -23,7 +24,7 @@ public class ProfDiscDTO {
         DisciplinaDTO disciplinaDTO = new DisciplinaDTO();
         disciplinaDTO.setId(professor.getDisciplina().getId());
         disciplinaDTO.setNome(professor.getDisciplina().getNome());
-        disciplinaDTO.setCargaHoraria(professor.getDisciplina().getCargaHoraria());
+        //disciplinaDTO.setCargaHoraria(professor.getDisciplina().getCargaHoraria());
 
         dto.setDisciplina(disciplinaDTO); // Agora, a disciplina não terá o professor dentro dela
 
