@@ -56,7 +56,7 @@ public class Notas {
     }
 
     public void setMedia() {
-        this.media=this.nota1+this.nota2/2;
+        this.media=(this.nota1+this.nota2)/2;
         if(this.media>=7){
             this.situacao = StatusEnum.Situacao.APROVADO;
             if(this.media>10){

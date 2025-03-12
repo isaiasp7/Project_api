@@ -1,5 +1,6 @@
 package P_api.DTO;
 
+import P_api.Model.Notas;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,4 +11,14 @@ public class RelacionaNotas {
     private float nota2;
     private long idDisc;
     private long idMat;
+
+    public RelacionaNotas() {
+
+    }
+    public RelacionaNotas(Notas nota) {
+        this.nota1 = nota.getNota1();
+        this.nota2 = nota.getNota2();
+        this.idMat = nota.getMatricula_fk().getId();
+        this.idDisc = nota.getDisciplinaN_fk().getId();
+    }
 }

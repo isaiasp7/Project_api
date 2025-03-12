@@ -2,7 +2,6 @@ package Util;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Utilities {
@@ -54,8 +53,8 @@ public class Utilities {
                         field.setAccessible(true); // Permite acesso a campos privados
                         try {
                                 Object value = field.get(obj); // Obtém o valor do campo para o objeto
-
-                                if(value!=null){
+                                // Verifica se o valor é nulo ou zero
+                                if(value!=null &&  !(value instanceof Number && ((Number) value).doubleValue() == 0)) {
                                         mapa.put(field.getName(),value);
                                 }
 
@@ -65,5 +64,12 @@ public class Utilities {
                 }
                 return mapa;
         }
+    //trata erros de NotFoundException, msg persolanizada
+    public static class NotFoundException extends RuntimeException {
+        public NotFoundException(String message) {
+            super(message);
+        }
+    }
+
 
 }
