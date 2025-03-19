@@ -49,7 +49,7 @@ public class AlunoService {
 
 
     public Aluno addAlunos(Aluno aluno) {
-        Aluno novoAluno = new Aluno(aluno.getCpf(), aluno.getNome(), aluno.getDataNasci());
+        Aluno novoAluno = new Aluno(aluno);
         return alunoRepository.save(novoAluno); // Retorna o aluno cadastrado
     }
 
@@ -60,14 +60,16 @@ public class AlunoService {
     }
 
 
-    public Aluno updateAlunosId(int id, Aluno alunoAtualizado) {
+    public Aluno updateAlunosId(int id, String email) {
         Aluno alunoExistente = this.searchAlunoId(id);
 
         try {
 
             // Não faz sentido aluno atualizar campos de cadastro
-            if (alunoAtualizado.getEmail() != null) {
-                alunoExistente.setEmail(alunoAtualizado.getEmail());
+            if (email != null) {
+                alunoExistente.setEmail(email);
+            }else{
+                throw new RuntimeException("Email não foi passado");
             }
 
             return alunoRepository.save(alunoExistente);

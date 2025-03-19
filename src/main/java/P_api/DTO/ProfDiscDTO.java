@@ -1,6 +1,5 @@
 package P_api.DTO;
 
-import P_api.Model.Professor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +13,7 @@ public class ProfDiscDTO {
     private DisciplinaDTO disciplina;
 
 
-    public static ProfDiscDTO toProfessorDTO(Professor professor) {
+    /*public static ProfDiscDTO toProfessorDTO(Professor professor) {
         ProfDiscDTO dto = new ProfDiscDTO();
         dto.setId(professor.getId());
         dto.setNome(professor.getNome());
@@ -29,6 +28,6 @@ public class ProfDiscDTO {
         dto.setDisciplina(disciplinaDTO); // Agora, a disciplina não terá o professor dentro dela
 
         return dto;
-    }
+    }*/
 }
 

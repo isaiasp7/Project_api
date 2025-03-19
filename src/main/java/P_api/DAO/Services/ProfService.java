@@ -3,6 +3,7 @@ package P_api.DAO.Services;
 import P_api.DAO.ClassRepository.DisciplinasRepository;
 import P_api.DAO.ClassRepository.ProfessoresRepository;
 import P_api.DTO.ProfDiscDTO;
+import P_api.Factory.ClassFactory;
 import P_api.Model.Disciplina;
 import P_api.Model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class ProfService {
     public List<ProfDiscDTO> getAllProfessores() {
         return profRepository.findAll() // Busca todos os professores do repositório
                 .stream() // Converte a lista em um fluxo
-                .map(ProfDiscDTO::toProfessorDTO) // Mapeia cada Professor para um ProfDiscDTO
+                .map(ClassFactory::toProfDiscDTO) // Mapeia cada Professor para um ProfDiscDTO
                 .collect(Collectors.toList()); // Coleta os resultados em uma lista de ProfDiscDTO
     }
     /*
@@ -60,7 +61,7 @@ public class ProfService {
     }
 
     public Disciplina relacionaProf_Disc(long Pid, long Did) {
-        var profId = profRepository.findById((long) Pid);
+        var profId = profRepository.findById( Pid);
         if (profId.isPresent()) {
             Professor prof = this.getProfessorById(Pid);
             Disciplina disc = discService.getDisciplinaById(Did);

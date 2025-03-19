@@ -66,8 +66,8 @@ public class AlunoCtrl {
     //=============== UPDATE ===========================
 
     @PutMapping("/updateAlunosId/{id}")
-    public ResponseEntity<Aluno> atualizarAluno(@PathVariable int id, @RequestBody Aluno aluno) {
-        Aluno alunoAtualizado= alunoS.updateAlunosId(id,aluno);
+    public ResponseEntity<Aluno> atualizarAluno(@PathVariable int id, @RequestBody String email) {//aluno atualiza email
+        Aluno alunoAtualizado= alunoS.updateAlunosId(id,email);
         return ResponseEntity.ok(alunoAtualizado);
     }
 

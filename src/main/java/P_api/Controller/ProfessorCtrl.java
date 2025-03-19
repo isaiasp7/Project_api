@@ -3,6 +3,7 @@ package P_api.Controller;
 import P_api.DAO.Services.ProfService;
 import P_api.DTO.ProfDiscDTO;
 import P_api.DTO.RelacionaPDRequest;
+import P_api.Factory.ClassFactory;
 import P_api.Model.Disciplina;
 import P_api.Model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,14 @@ public class ProfessorCtrl {
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<ProfDiscDTO> getById(@PathVariable int id){
-        Professor p = profService.getProfessorById(id);
-        return ResponseEntity.ok(ProfDiscDTO.toProfessorDTO(p));//retorna o dto para que ao ler disciplinas de prof não retorne para prof novamente
+    public ResponseEntity<?> getById(@PathVariable int id){
+        Professor prof = profService.getProfessorById(id);
+        if(prof != null){
+            return ResponseEntity.ok(ClassFactory.toProfDiscDTO(prof));//retorna o dto para que ao ler disciplinas de prof não retorne para prof novamente
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não existe professor com o id correspondente");
+        }
+
     }
 
 
@@ -48,7 +54,7 @@ public class ProfessorCtrl {
     @PutMapping("/updateP/{id}")
     public ResponseEntity<ProfDiscDTO> updateP(@PathVariable long id,@RequestBody Professor professor) {
         Professor prof = profService.updateProfessor(id, professor);
-        return ResponseEntity.ok(ProfDiscDTO.toProfessorDTO(prof));
+        return ResponseEntity.ok(ClassFactory.toProfDiscDTO(prof));//ProfDiscDTO.toProfessorDTO
     }
 
     //============= DELETE =================================

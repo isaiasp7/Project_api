@@ -1,5 +1,6 @@
 package P_api.Model;
 
+
 import Util.Utilities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -47,6 +48,15 @@ public class Aluno {
         this.cpf = cpf;
         this.nome = nome;
         this.dataNasci = dataNasci;
+        this.email = Utilities.gerar_email(this.nome);
+
+
+    }
+    public Aluno(Aluno aluno) {
+
+        this.cpf = aluno.getCpf();
+        this.nome = aluno.getNome();
+        this.dataNasci = aluno.getDataNasci();
         this.email = Utilities.gerar_email(this.nome);
 
 
