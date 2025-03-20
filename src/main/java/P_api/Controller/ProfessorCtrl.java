@@ -4,7 +4,6 @@ import P_api.DAO.Services.ProfService;
 import P_api.DTO.ProfDiscDTO;
 import P_api.DTO.RelacionaPDRequest;
 import P_api.Factory.ClassFactory;
-import P_api.Model.Disciplina;
 import P_api.Model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,9 +70,9 @@ public class ProfessorCtrl {
     //============= RELACIONAMENTO ========================
 
     @PostMapping("/AddDisciplina")
-    public ResponseEntity<Disciplina> cadastrarProfessor_Disc(@RequestBody RelacionaPDRequest id) {
-            Disciplina disc=profService.relacionaProf_Disc(id.getPid(), id.getDid());
-            return ResponseEntity.ok(disc);
+    public ResponseEntity<ProfDiscDTO> cadastrarProfessor_Disc(@RequestBody RelacionaPDRequest id) {
+            Professor disc=profService.relacionaProf_Disc(id.getProfessor_id(), id.getDisciplina_id());
+            return ResponseEntity.ok(ClassFactory.toProfDiscDTO(disc));
     }
 
 

@@ -23,8 +23,10 @@ public class ProfService {
     ProfessoresRepository profRepository;
     @Autowired
     private DisciplinasRepository discRepository;
-
-    DiscService discService;
+    @Autowired
+    private DiscService discService;
+    @Autowired
+    private DisciplinasRepository disciplinasRepository;
 
     public Professor newProfessor(Professor professor) { //testar add prof já com uma disciplina
         Professor newP = new Professor(professor);
@@ -60,13 +62,18 @@ public class ProfService {
         }
     }
 
-    public Disciplina relacionaProf_Disc(long Pid, long Did) {
-        var profId = profRepository.findById( Pid);
+    public Professor relacionaProf_Disc(long Pid, long Did) {
+        /*System.out.println("relacionaProf_Disc");
+        System.out.println("=============================");*/
+        Optional<Professor> profId = profRepository.findById(Pid);
         Disciplina disc = discService.getDisciplinaById(Did);
         if (profId.isPresent() && disc != null ) {
             Professor prof = this.getProfessorById(Pid);
-            prof.setDisciplina(disc);
-            return disc;
+            prof.setDisciplina_fk(disc);
+            disc.setProfessor(prof);
+            disciplinasRepository.save(disc);
+            profRepository.save(prof);
+            return prof;
 
         } else {
             return null;

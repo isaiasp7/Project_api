@@ -99,7 +99,7 @@ public class DiscService {
                         System.out.println("=====================");
                         //Professor prof = profRepository.findById(((Professor) val).getId()).orElse(null);
 
-                        professor.setDisciplina(disc);//garantido que a tabela prof tera a disciplina
+                        professor.setDisciplina_fk(disc);//garantido que a tabela prof tera a disciplina
                         profRepository.save(professor);
                         //profService.updateProf(prof) seria necessario se não tivevesse @OneToOne(cascade = CascadeType.ALL) no relacionamento para  professor receber a disciplina sua tabela tbm
                     }

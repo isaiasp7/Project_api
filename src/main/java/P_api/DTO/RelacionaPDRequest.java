@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RelacionaPDRequest {
-    private long Pid;//ID DO PROFESSOR
-    private long Did;//id da disciplina
+    private long professor_id;//ID DO PROFESSOR
+    private long disciplina_id;//id da disciplina
 }

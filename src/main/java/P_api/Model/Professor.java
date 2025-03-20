@@ -36,7 +36,7 @@ public class Professor {
     public Professor(Professor professor) {
         this.setNome(professor.getNome());
         this.email = Utilities.gerar_email(this.getNome());
-        this.disciplina_fk = professor.getDisciplina();
+        this.disciplina_fk = professor.getDisciplina_fk();
         this.id= Utilities.gerar_id("professor");
         this.telefone = professor.getTelefone();
     }
@@ -52,14 +52,6 @@ public class Professor {
 
 
 
-
-
-
-
-
-
-
-
     public void setNome(String nome) {
         if (nome!=null) {
             this.nome = nome;
@@ -71,14 +63,8 @@ public class Professor {
 
 
 
-    public Disciplina getDisciplina() {
-        if (disciplina_fk!=null) {
-            return disciplina_fk;
-        }
-        return null;
-    }
 
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina_fk = disciplina;
-    }
+
+
+
 }

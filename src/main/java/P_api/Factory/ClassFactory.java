@@ -33,23 +33,26 @@ public class ClassFactory {
             return new DisciplinaDTO(disciplina.getId(),disciplina.getNome());
         }
 
-        public static ProfDiscDTO toProfDiscDTO(Professor professor) {
-                ProfDiscDTO dto = new ProfDiscDTO();
-                dto.setId(professor.getId());
-                dto.setNome(professor.getNome());
-                dto.setEmail(professor.getEmail());
-                dto.setTelefone(professor.getTelefone());
+    public static ProfDiscDTO toProfDiscDTO(Professor professor) {
+        ProfDiscDTO dto = new ProfDiscDTO();
+        dto.setId(professor.getId());
+        dto.setNome(professor.getNome());
+        dto.setEmail(professor.getEmail());
+        dto.setTelefone(professor.getTelefone());
 
-                DisciplinaDTO disciplinaDTO = new DisciplinaDTO();
-                disciplinaDTO.setId(professor.getDisciplina().getId());
-                disciplinaDTO.setNome(professor.getDisciplina().getNome());
-                //disciplinaDTO.setCargaHoraria(professor.getDisciplina().getCargaHoraria());
+        if (professor.getDisciplina_fk() != null) { // Verifica se a disciplina não é nula
+            DisciplinaDTO disciplinaDTO = new DisciplinaDTO();
+            disciplinaDTO.setId(professor.getDisciplina_fk().getId());
+            disciplinaDTO.setNome(professor.getDisciplina_fk().getNome());
+            // disciplinaDTO.setCargaHoraria(professor.getDisciplina().getCargaHoraria());
 
-                dto.setDisciplina(disciplinaDTO); // Agora, a disciplina não terá o professor dentro dela
-
-                return dto;
-
+            dto.setDisciplina(disciplinaDTO);
+        } else {
+            dto.setDisciplina(null); // Ou pode definir um objeto vazio, dependendo do seu caso
         }
+
+        return dto;
+    }
 
     public AlunoDTO converseAluno_DTO(Aluno aluno) {
         return new AlunoDTO(aluno);
