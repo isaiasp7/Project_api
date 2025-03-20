@@ -5,7 +5,6 @@ import P_api.DAO.Services.MatricService;
 import P_api.DTO.MatriculaDTO;
 import P_api.DTO.RelacionaAMRequest;
 import P_api.Model.Matricula;
-import P_api.Model.Turma;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,14 +47,7 @@ public class MatriculaCtrl {
 
     }
     //================== CREATE =========================
-    @PostMapping("/relacionaMT")
-    //==============================
-    //Cria uma nova Matricula cadastrada em uma turma existente
-    //==============================
-    public ResponseEntity createMatric_Turma(@RequestBody RelacionaAMRequest relacao) {//Recebe alunoCpf, turmaID
-        Matricula newMatricula = matricService.createMatricula(relacao.getAlunoCpf(),relacao.getTurmaID());
-        return ResponseEntity.ok(newMatricula);
-    }
+
 
     @PostMapping("/createM/{cpf}")
     //==============================
@@ -89,29 +81,17 @@ public class MatriculaCtrl {
 
 
     //================== RELACIONAMENTO =========================
-
-    /*@PostMapping({"/cpf/{cpf}"})//cadastrar uma matricula a um aluno existente
-    public ResponseEntity<?> create(@PathVariable String cpf,@RequestBody Matricula matricula) {
-        try {
-            Aluno inscrito = alunoService.searchAluno(cpf);
-            if (inscrito != null) {
-                matricula.setAluno_cpf(inscrito);
-                inscrito.setMatriculas(matricula);
-                alunoService.saveAlunos(inscrito);
-                return ResponseEntity.ok(inscrito);
-
-            }
-            else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado com o CPF: " + cpf);
-
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }*/
+    @PutMapping("/relacionaMT")
+    //==============================
+    //Cria uma nova Matricula cadastrada em uma turma existente
+    //==============================
+    public ResponseEntity createMatric_Turma(@RequestBody RelacionaAMRequest relacao) {//Recebe alunoCpf, turmaID
+        Matricula newMatricula = matricService.createMatricula(relacao.getAlunoCpf(),relacao.getTurmaID());
+        return ResponseEntity.ok(newMatricula);
+    }
 
 
-
-    @PutMapping("/relacoesMT")
+    /*@PutMapping("/relacoesMT")
     //==============================
     //Associa matricula a uma turma
     //==============================
@@ -121,15 +101,8 @@ public class MatriculaCtrl {
             ResponseEntity resposta = new ResponseEntity(aluno, HttpStatus.OK);
             return resposta;
 
-    }
+    }*/
 
 
-
-
-
-
-
-
-   // @PostMapping("/relacionamentoMT")//matricula e turma
 
 }

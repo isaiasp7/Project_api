@@ -120,7 +120,7 @@ public class MatricService {
                 .orElseThrow(() -> new RuntimeException("Matrícula não encontrada"));
 
         turmasRepository.findById(dto.getId())
-                .orElseThrow(() -> new RuntimeException("Matrícula não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada"));
         //matricula e turma encontrados
 
         dto.getMatriculas().add(matricula);

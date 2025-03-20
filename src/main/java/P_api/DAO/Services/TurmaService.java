@@ -45,14 +45,14 @@ public class TurmaService {
 
     }
 
-    public Turma alterarCapacidadeA(int id, int novaCapacidade) {
+    public Turma alterarCapacidadeA(int id, int novaCapacidadeM) {
         // Encontrar a sala pelo id
         Optional<Turma> salaOptional = turmasRepository.findById((long) id);
 
         if (salaOptional.isPresent()) {
             Turma sala = salaOptional.get();
             // Atualiza a capacidade
-            sala.setCapacidadeAtual(novaCapacidade);
+            sala.setCapacidadeMax(novaCapacidadeM);
 
             // Salva as alterações no banco
             turmasRepository.save(sala);
@@ -77,6 +77,16 @@ public class TurmaService {
 
 
        }
+
+    public Boolean deleteTurma(long id) {
+        Turma turma = this.getByID(id);
+        if(turma != null){
+            turmaRepository.delete(turma);
+            return true;
+        }
+        return false;
+
+    }
 
 
 

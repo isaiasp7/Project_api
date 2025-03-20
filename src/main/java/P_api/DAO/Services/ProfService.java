@@ -26,7 +26,7 @@ public class ProfService {
 
     DiscService discService;
 
-    public Professor newProfessor(Professor professor) {
+    public Professor newProfessor(Professor professor) { //testar add prof já com uma disciplina
         Professor newP = new Professor(professor);
 
         if (profRepository.existsById(newP.getId())) {
@@ -62,9 +62,9 @@ public class ProfService {
 
     public Disciplina relacionaProf_Disc(long Pid, long Did) {
         var profId = profRepository.findById( Pid);
-        if (profId.isPresent()) {
+        Disciplina disc = discService.getDisciplinaById(Did);
+        if (profId.isPresent() && disc != null ) {
             Professor prof = this.getProfessorById(Pid);
-            Disciplina disc = discService.getDisciplinaById(Did);
             prof.setDisciplina(disc);
             return disc;
 
@@ -90,7 +90,7 @@ public class ProfService {
                 field.setAccessible(true);//isso é usado para dizer que mesmo o atributo sendo priva
                 if (key.equals("id")) {
                     continue;
-                } else if (key.equals("discplina_fk")) {
+                } else if (key.equals("discplina_fk")) {//tratar inexistencia de disciplina
                     prof.setDisciplina_fk((Disciplina) val);
                 }
                 field.set(prof, val);

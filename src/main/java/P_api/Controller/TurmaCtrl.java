@@ -39,8 +39,8 @@ public class TurmaCtrl {
 
 
     @PutMapping("/alterCapacidade/{id}&{cap}")
-    public ResponseEntity<?> alterCapAc(@PathVariable int id, @PathVariable int cap) {
-        Turma turma =turmaService.alterarCapacidadeA(id,cap);
+    public ResponseEntity<?> alterCapAc(@PathVariable int id, @PathVariable int capM) {
+        Turma turma =turmaService.alterarCapacidadeA(id,capM);
         return ResponseEntity.ok(turma);
 
     }
@@ -48,6 +48,13 @@ public class TurmaCtrl {
     public ResponseEntity<?> alterNome(@PathVariable long id, @RequestParam String turmaN) {
         Object turma = turmaService.alterarNome(id,turmaN);
         return ResponseEntity.ok(turma);
+
+    }
+
+    @DeleteMapping("deleteTurm")
+    public ResponseEntity<?> deleteTurm(@RequestParam long id) {
+        Boolean bool = turmaService.deleteTurma(id);
+        return ResponseEntity.ok(bool?"turma excluida":"Turma não encontrada");
 
     }
 }

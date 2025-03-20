@@ -51,7 +51,7 @@ public class AlunoCtrl {
 
 
     //================ DELETE ========================
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletarAluno(@PathVariable int id) {
         Aluno temp_aluno =alunoS.searchAlunoId(id);
         var Alunonome = temp_aluno.getNome();
