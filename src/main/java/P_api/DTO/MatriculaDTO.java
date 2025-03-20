@@ -2,6 +2,7 @@ package P_api.DTO;
 
 import P_api.Model.Aluno;
 import P_api.Model.Matricula;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +12,14 @@ public class MatriculaDTO {
     private long id;
     private String nome;
     private AlunoDTO aluno;
+    @JsonProperty("turma")
+    private LitlleTurmaDTO litlleTurma;
 
     public MatriculaDTO(Matricula matricula) {
         this.id = matricula.getId();
         this.nome = matricula.getAluno_cpf().getNome();
         this.aluno = new AlunoDTO(matricula.getAluno_cpf());
+        this.litlleTurma = new LitlleTurmaDTO(matricula.getTurma());
     }
 
     public MatriculaDTO(long id,String nome, Aluno aluno) {

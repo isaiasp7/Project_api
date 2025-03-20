@@ -11,7 +11,6 @@ import P_api.Model.Turma;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,8 +30,8 @@ public class MatricService {
 
 
     //Create
-    @Transactional
-    public Matricula createMatricula(String aluno_cpf, long turma_id) {//Relaciona aluno com turma com uma matricula
+    //@Transactional
+public MatriculaDTO createMatricula(String aluno_cpf, long turma_id) {//Relaciona aluno com turma com uma matricula
         if (turma_id <= 0) {
             throw new IllegalArgumentException("A turma não pode ser nula.");
         }
@@ -51,7 +50,7 @@ public class MatricService {
         turma.setCapacidadeAtual(turma.getCapacidadeAtual() + 1);
         turmasRepository.save(turma);
 
-        return matricula;
+        return new MatriculaDTO(matricula);
     }
 
 
@@ -68,7 +67,7 @@ public class MatricService {
         return  "A matricula "+ mat.getId()+" foi removida com sucesso.\n Mas o aluno "+ aluno.getNome()+ " ainda existe.";
     }
 
-    public String deleteMatComp(long matricula){//dele apenas a matricula e aluno corresponde
+    public String deleteMatComp(long matricula){//delelta matricula e aluno
         Matricula mat = this.seachID(matricula).orElseThrow(()->new EntityNotFoundException("Matricula não encontrada"));
         Aluno aluno = mat.getAluno_cpf();
         alunoRepository.delete(aluno);

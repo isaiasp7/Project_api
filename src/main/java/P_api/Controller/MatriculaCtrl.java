@@ -83,15 +83,15 @@ public class MatriculaCtrl {
     //================== RELACIONAMENTO =========================
     @PutMapping("/relacionaMT")
     //==============================
-    //Cria uma nova Matricula cadastrada em uma turma existente
+    //Cadastra aluno em uma turma existente por meio de matricula
     //==============================
     public ResponseEntity createMatric_Turma(@RequestBody RelacionaAMRequest relacao) {//Recebe alunoCpf, turmaID
-        Matricula newMatricula = matricService.createMatricula(relacao.getAlunoCpf(),relacao.getTurmaID());
+        MatriculaDTO newMatricula = matricService.createMatricula(relacao.getAlunoCpf(),relacao.getTurmaID());
         return ResponseEntity.ok(newMatricula);
     }
 
 
-    /*@PutMapping("/relacoesMT")
+   /* @PutMapping("/relacoesMT")
     //==============================
     //Associa matricula a uma turma
     //==============================

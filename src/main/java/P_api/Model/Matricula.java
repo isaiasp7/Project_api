@@ -41,7 +41,6 @@ public class Matricula {
 
     @ManyToOne
     @JoinColumn(name = "turma_id")//junção de colunas && uma nova tabela chamada turma_id sera gerada possuindo apenas a FK
-    //@JsonIgnore ERRRRRRRROOOOOOOOOOO ESTA AQUIIIIIIIIIIIIIII ====================================================================
     private Turma turma;
 
 
@@ -84,10 +83,6 @@ public class Matricula {
         }
     }
 
-    public Turma setTurma(Turma turma) {
-
-        return turma;
-    }
 
     public void setDataMatricula(LocalDate dataM) {
         this.dataMatricula = dataM;
